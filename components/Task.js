@@ -3,6 +3,18 @@ import styled from 'styled-components/native';
 import MyButton from './MyButton';
 import { imageicons } from '../images'
 
+
+const Task = ({ item, deleteTask })  => {
+    return (
+        <TaskView>
+            <MyButton type={imageicons.uncompleted} />
+            <Contents>{item.text}</Contents>
+            <MyButton type={imageicons.update} />
+            <MyButton type={imageicons.delete} id={item.id} onPressOut={deleteTask} />
+        </TaskView>
+    );
+}
+
 const Contents = styled.Text`
     flex: 1;
     font-size: 24px;
@@ -17,16 +29,5 @@ const TaskView = styled.View`
     padding: 5px;
     margin: 3px 0px;
 `;
-
-const Task = ({ text })  => {
-    return (
-        <TaskView>
-            <MyButton type={imageicons.uncompleted} />
-            <Contents>{text}</Contents>
-            <MyButton type={imageicons.update} />
-            <MyButton type={imageicons.delete} />
-        </TaskView>
-    );
-}
 
 export default Task;

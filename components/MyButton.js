@@ -10,9 +10,12 @@ const Icon = styled.Image`
     margin: 10px;
 `;
 
-const MyButton = ({ type, onPressOut }) => {
+const MyButton = ({ type, onPressOut, id }) => {
+    const _onPressOut = () => {
+        onPressOut(id)
+    }
     return(
-        <TouchableOpacity>
+        <TouchableOpacity onPressOut={_onPressOut}>
             <Icon source={type} />
         </TouchableOpacity>
     );

@@ -17,14 +17,20 @@ function App () {
   });
 
   const _addTask = () => {
-    const ID = Data.now().toString();
+    const ID = Date.now().toString();
     const newTaskObject = {
       [ID]: { id: ID, text: newTask, completed: false }
     };
     setNewTask('');
-    setTasks({...tasks, ...newTaskObject})
+    setTasks({...tasks, ...newTaskObject}) // 전개연산자로 본래 tasks값과 새로운 Task를 나열
   };
-  
+
+  const _deleteTask = id => {
+    const currentTasks = Object.assign({}, tasks); // 첫번쨰 인수에 두번째 인수를 복사
+    delete currentTasks[id]; // 자바스크립트 연산자
+    setTasks(currentTasks);
+  };
+
   const _handleTextChange = text => {
     setNewTask(text);
   };
@@ -33,15 +39,18 @@ function App () {
     <ThemeProvider theme={theme}>
       <StatusBar barStyle="dark-content" backgroundColor={theme.background}/>
       <MyView>
+        {/*타이틀문구*/}
         <MainTitle>ToDo List</MainTitle>
+        {/*텍스트 입력 칸*/}
         <MyInput 
-          placeholder="+ Add a Task"
-          value={newTask}
+          placeholder="+ Add a Task" 
+          value={newTask} // MyInput에 newTask를 value라는 이름의 prop으로 보냄, newTask는 _handleTextChange를 반영함
           onChangeText={_handleTextChange}
           onSubmitEditing={_addTask}
          />
+         {/*List활용, 역행으로 map, 순회하여 tasks 뽑아냄.*/}
          <List width={width}>
-           {Object.values(tasks).reverse().map(item => (<Task key={item.id} text={item.text} />))}
+           {Object.values(tasks).reverse().map(item => (<Task key={item.id} item={item} deleteTask={_deleteTask} />))}
          </List>
       </MyView>
     </ThemeProvider>
