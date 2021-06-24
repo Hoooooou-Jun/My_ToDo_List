@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StatusBar, Dimensions } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components/native'
 import { theme } from './theme';
-import { imageicons } from './images';
 import MyInput from './components/MyInput';
 import Task from './components/Task';
 
@@ -31,6 +30,18 @@ function App () {
     setTasks(currentTasks);
   };
 
+  const _toggleTask = id => {
+    const currentTasks = Object.assign({}, tasks);
+    currentTasks[id]['completed'] = !currentTasks[id]['completed']; //completed 속성값 변경
+    setTasks(currentTasks);
+  }
+
+  const _updateTask = item => {
+    const currentTasks = Object.assign({}, tasks);
+    currentTasks[item.id] = item;
+    setTasks(currentTasks);
+  }
+
   const _handleTextChange = text => {
     setNewTask(text);
   };
@@ -50,7 +61,15 @@ function App () {
          />
          {/*List활용, 역행으로 map, 순회하여 tasks 뽑아냄.*/}
          <List width={width}>
-           {Object.values(tasks).reverse().map(item => (<Task key={item.id} item={item} deleteTask={_deleteTask} />))}
+           {Object.values(tasks)
+           .reverse()
+           .map(item => (
+            <Task 
+              key={item.id}
+              item={item}
+              deleteTask={_deleteTask}
+              toggleTask={_toggleTask}
+              updateTask={_updateTask} />))}
          </List>
       </MyView>
     </ThemeProvider>
